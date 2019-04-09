@@ -103,12 +103,12 @@ def unet_1d(pretrained_weights = None,input_size = (10000,8)):
     merge9 = concatenate([conv1,up9], axis = 2)
     conv9 = Conv1D(8, 7, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(merge9)
     conv9 = Conv1D(8, 7, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
-    conv9 = Conv1D(5, 7, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
-    conv10 = Conv1D(5, 1, activation = 'sigmoid')(conv9)
+    conv9 = Conv1D(8, 7, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
+    conv10 = Conv1D(6, 1, activation = 'softmax')(conv9)
 
     model = Model(inputs = inputs, outputs = conv10)
 
-    model.compile(optimizer = SGD(lr = 1e-4), loss = 'categorical_crossentropy', metrics = ['accuracy'])
+    model.compile(optimizer = Adam(lr = 1e-4), loss = 'categorical_crossentropy', metrics = ['accuracy'], sample_weight_mode="temporal")
     
     #model.summary()
 
